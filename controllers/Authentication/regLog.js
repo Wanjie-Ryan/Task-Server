@@ -103,4 +103,4 @@ const UpdateProfile = (req,res)=>{
 
 
 
-module.exports = {Register,Login}
+module.exports = {Register,Login,UpdateProfile}
