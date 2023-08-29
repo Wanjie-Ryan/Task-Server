@@ -6,7 +6,7 @@ const AuthMiddleware =  require('../../middleware/auth')
 router.route('/register').post(Register)
 router.route('/login').post(Login)
 router.route('/updateprofile/:id').patch(AuthMiddleware,UpdateProfile)
-router.route('/singleuser/:id').get(getSingleUser)
+router.route('/singleuser/:id').get(AuthMiddleware,getSingleUser)
 
 
 module.exports = router

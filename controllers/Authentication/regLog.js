@@ -93,23 +93,61 @@ const UpdateProfile = async (req, res) => {
       { new: true, runValidators: true }
     );
 
-    if(!updateUser){
-        return res.status(StatusCodes.NOT_FOUND).json({msg:`The user has not been found`})
+    if (!updateUser) {
+      return res
+        .status(StatusCodes.NOT_FOUND)
+        .json({ msg: `The user has not been found` });
     }
 
-    return res.status(StatusCodes.OK).json({msg:'Your Profile has been updated Successfully', updateUser})
+    const updateUserObj = updateUser.toObject();
+    delete updateUserObj._id;
+    delete updateUserObj.name;
+    delete updateUserObj.email;
+    delete updateUserObj.contact;
+    delete updateUserObj.company;
+    delete updateUserObj.role;
+    delete updateUserObj.password;
 
+    return res
+      .status(StatusCodes.OK)
+      .json({
+        msg: "Your Profile has been updated Successfully",
+        updateUserObj,
+      });
   } catch (err) {
-    console.log(err);
+    // console.log(err);
     res
       .status(StatusCodes.INTERNAL_SERVER_ERROR)
       .json({ msg: "Something went wrong, please try again later" });
   }
 };
 
-const getSingleUser  = (req,res)=>{
+const getSingleUser = async (req, res) => {
+  try {
+    const { id: userid } = req.params;
 
-    res.send('send')
-}
+    const singleUser = await AuthModel.findById({ _id: userid });
 
-module.exports = { Register, Login, UpdateProfile,getSingleUser };
+    if (!singleUser) {
+      return res
+        .status(StatusCodes.NOT_FOUND)
+        .json({ msg: "The User has not been found" });
+    }
+
+    const singleuserObj = singleUser.toObject();
+    delete singleuserObj._id;
+    delete singleuserObj.company;
+    delete singleuserObj.role;
+    delete singleuserObj.password;
+    return res
+      .status(StatusCodes.OK)
+      .json({ msg: "Single user fetched successfully", singleuserObj });
+  } catch (err) {
+    // console.log(err)
+    res
+      .status(StatusCodes.INTERNAL_SERVER_ERROR)
+      .json({ msg: "Something went wrong, please try again later" });
+  }
+};
+
+module.exports = { Register, Login, UpdateProfile, getSingleUser };
