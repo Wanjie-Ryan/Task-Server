@@ -11,6 +11,10 @@ const { StatusCodes } = require("http-status-codes");
 const connectionDB = require('./connection/connection')
 
 
+// REGISTER AND LOGIN ROUTES
+
+const RegisterLoginRoute = require('./routes/Authentication/regLog')
+
 
 app.use(helmet());
 app.use(xss());
@@ -25,6 +29,10 @@ app.use(
 );
 app.use(cors());
 
+
+// REGISTER AND LOGIN ROUTES
+
+app.use('/api/tasks', RegisterLoginRoute)
 
 
 
