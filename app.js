@@ -14,10 +14,9 @@ const connectionDB = require("./connection/connection");
 
 const RegisterLoginRoute = require("./routes/Authentication/regLog");
 
-
 // ADMIN ROUTES
 
-const createproject = require('./routes/Admin/projects')
+const createproject = require("./routes/Admin/projects");
 
 app.use(helmet());
 app.use(xss());
@@ -36,10 +35,9 @@ app.use(cors());
 
 app.use("/api/tasks", RegisterLoginRoute);
 
-
 //ADMIN ROUTES
 
-app.use('/api/tasks', createproject)
+app.use("/api/tasks", createproject);
 
 const DBConnection = async () => {
   try {
