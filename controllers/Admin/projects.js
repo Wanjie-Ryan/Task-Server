@@ -96,7 +96,7 @@ const UpdateProject = async(req,res)=>{
 
     catch(err){
 
-        console.log(err)
+        // console.log(err)
         res
         .status(StatusCodes.INTERNAL_SERVER_ERROR)
         .json({ msg: "Something went wrong, please try again later" });

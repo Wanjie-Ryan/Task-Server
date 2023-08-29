@@ -27,7 +27,7 @@ const projectSchema = new mongoose.Schema({
 
     status: {
         type: String,
-        enum: ["Pending", "Complete"],
+        enum: ["pending", "complete"],
         default: "Pending",
         required: [true, "Status of Project is required"],
       },
