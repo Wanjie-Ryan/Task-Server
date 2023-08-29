@@ -108,12 +108,10 @@ const UpdateProfile = async (req, res) => {
     delete updateUserObj.role;
     delete updateUserObj.password;
 
-    return res
-      .status(StatusCodes.OK)
-      .json({
-        msg: "Your Profile has been updated Successfully",
-        updateUserObj,
-      });
+    return res.status(StatusCodes.OK).json({
+      msg: "Your Profile has been updated Successfully",
+      updateUserObj,
+    });
   } catch (err) {
     // console.log(err);
     res
@@ -150,4 +148,22 @@ const getSingleUser = async (req, res) => {
   }
 };
 
-module.exports = { Register, Login, UpdateProfile, getSingleUser };
+const verifyToken = async (req, res, next) => {
+  try {
+    if (req.headers.authorization) {
+      const authHeader = req.headers.authorization;
+      const token = authHeader.replace("Bearer ", "");
+      const decoded = jwt.verify(token, process.env.user_secret_key);
+      req.token = decoded;
+      res.json({ type: "success" });
+      // next()
+    } else {
+      res.status(StatusCodes.UNAUTHORIZED).json({ msg: "Token is bad" });
+    }
+  } catch (err) {
+    // res.json({ type: 'error', message: 'Please authenticate', details: err })
+    return res.status(StatusCodes.UNAUTHORIZED).json({ msg: "Invalid token" });
+  }
+};
+
+module.exports = { Register, Login, UpdateProfile, getSingleUser, verifyToken };
