@@ -11,5 +11,5 @@ const {
 router.route("/createtask").post(AuthMiddleware, CreateTask);
 router.route("/getadmintask").get(AuthMiddleware, GetAdminTask);
 router.route("/getusertask").get(AuthMiddleware, GetuserTask);
-router.route("/updatetask").patch(AuthMiddleware, updateTasks);
+router.route("/updatetask/:id").patch(AuthMiddleware, updateTasks);
 module.exports = router;

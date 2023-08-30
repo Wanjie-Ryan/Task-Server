@@ -55,7 +55,7 @@ const GetAdminTask = async (req, res) => {
         .json({ msg: "Tasks fetched sucessfully", tasks });
     }
   } catch (err) {
-    console.log(err);
+    // console.log(err);
     res
       .status(StatusCodes.INTERNAL_SERVER_ERROR)
       .json({ msg: "Something went wrong, please try again later" });
@@ -96,16 +96,62 @@ const GetuserTask = async (req, res) => {
         .json({ msg: "Tasks fetched sucessfully", tasks });
     }
   } catch (err) {
-    consoel.log(err);
+    // console.log(err);
     res
       .status(StatusCodes.INTERNAL_SERVER_ERROR)
       .json({ msg: "Something went wrong, please try again later" });
   }
 };
 
-const updateTasks = (req,res)=>{
+const updateTasks = async (req, res) => {
+  try {
+    const token = req.headers.authorization.split(" ")[1];
 
-    res.send('hey')
-}
+    if (!token) {
+      return res
+        .status(StatusCodes.UNAUTHORIZED)
+        .json({ msg: "You are not authorized" });
+    }
 
-module.exports = { CreateTask, GetAdminTask, GetuserTask,updateTasks };
+    const decodedToken = jwt.verify(token, process.env.user_secret_key);
+    const userId = decodedToken.userId;
+
+    const findOneUser = await UserModel.findById(userId);
+
+    if (!findOneUser) {
+      return res
+        .status(StatusCodes.NOT_FOUND)
+        .json({ msg: "User has not been found" });
+    } else if (findOneUser.role != "Member") {
+      return res
+        .status(StatusCodes.UNAUTHORIZED)
+        .json({ msg: "Cannot perform this request" });
+    } else if (findOneUser.role === "Member") {
+      const { status } = req.body;
+      const { id: taskId } = req.params;
+
+      const updateSingleTask = await taskModel.findByIdAndUpdate(
+        { _id: taskId },
+        req.body,
+        { new: true, runValidators: true }
+      );
+
+      if (!updateSingleTask) {
+        return res
+          .status(StatusCodes.NOT_FOUND)
+          .json({ msg: "Task not found" });
+      }
+
+      return res
+        .status(StatusCodes.OK)
+        .json({ msg: "Task was updated sucessfully", updateSingleTask });
+    }
+  } catch (err) {
+    console.log(err);
+    res
+      .status(StatusCodes.INTERNAL_SERVER_ERROR)
+      .json({ msg: "Something went wrong, please try again later" });
+  }
+};
+
+module.exports = { CreateTask, GetAdminTask, GetuserTask, updateTasks };

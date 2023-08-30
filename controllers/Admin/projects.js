@@ -23,11 +23,9 @@ const CreateProject = async (req, res) => {
     // console.log(findOneUser)
 
     if (!findOneUser) {
-      return res
-        .status(StatusCodes.NOT_FOUND)
-        .json({
-          msg: "User does not exist, therefore, cannot create the project",
-        });
+      return res.status(StatusCodes.NOT_FOUND).json({
+        msg: "User does not exist, therefore, cannot create the project",
+      });
     }
 
     const newProject = await ProjectsModel.create({
@@ -84,12 +82,10 @@ const UpdateProject = async (req, res) => {
         .json({ msg: "Project has not been found" });
     }
 
-    return res
-      .status(StatusCodes.OK)
-      .json({
-        msg: "Project has been updated successfully",
-        UpdateSingleProject,
-      });
+    return res.status(StatusCodes.OK).json({
+      msg: "Project has been updated successfully",
+      UpdateSingleProject,
+    });
   } catch (err) {
     // console.log(err)
     res
