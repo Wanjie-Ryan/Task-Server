@@ -148,6 +148,37 @@ const getSingleUser = async (req, res) => {
   }
 };
 
+const GetUserRole = async (req, res) => {
+  try {
+    const { role } = req.query;
+
+    if (!role) {
+      return res
+        .status(StatusCodes.BAD_REQUEST)
+        .json({ msg: "Role Parameter is required" });
+    }
+
+    const regex = new RegExp(role, "i");
+
+    const users = await AuthModel.find({ role: regex });
+
+    if (users.length === 0) {
+      return res
+        .status(StatusCodes.NOT_FOUND)
+        .json({ msg: "No user has been found" });
+    }
+
+    return res
+      .status(StatusCodes.OK)
+      .json({ msg: "Users retrieved are the following", users });
+  } catch (err) {
+    // console.log(err)
+    res
+      .status(StatusCodes.INTERNAL_SERVER_ERROR)
+      .json({ msg: "Something went wrong, please try again later" });
+  }
+};
+
 const verifyToken = async (req, res, next) => {
   try {
     if (req.headers.authorization) {
@@ -166,4 +197,11 @@ const verifyToken = async (req, res, next) => {
   }
 };
 
-module.exports = { Register, Login, UpdateProfile, getSingleUser, verifyToken };
+module.exports = {
+  Register,
+  Login,
+  UpdateProfile,
+  getSingleUser,
+  GetUserRole,
+  verifyToken,
+};

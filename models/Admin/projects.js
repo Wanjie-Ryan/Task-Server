@@ -13,14 +13,14 @@ const projectSchema = new mongoose.Schema(
       required: [true, "name of project must be provided"],
     },
 
-    deadline: {
-      type: Date,
-      required: [true, "deadline date must be provided"],
-    },
-
     description: {
       type: String,
       required: [true, "project description must be provided"],
+    },
+
+    deadline: {
+      type: Date,
+      required: [true, "deadline date must be provided"],
     },
 
     status: {
