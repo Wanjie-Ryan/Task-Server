@@ -103,4 +103,9 @@ const GetuserTask = async (req, res) => {
   }
 };
 
-module.exports = { CreateTask, GetAdminTask, GetuserTask };
+const updateTasks = (req,res)=>{
+
+    res.send('hey')
+}
+
+module.exports = { CreateTask, GetAdminTask, GetuserTask,updateTasks };
