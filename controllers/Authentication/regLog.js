@@ -78,14 +78,14 @@ const Login = async (req, res) => {
 
 const UpdateProfile = async (req, res) => {
   try {
-    const { photo, password } = req.body;
+    const { photo } = req.body;
     const { id: userid } = req.params;
 
-    if (password) {
-      const salt = await bcrypt.genSalt(10);
-      const hashedPassword = await bcrypt.hash(password, salt);
-      req.body.password = hashedPassword;
-    }
+    // if (password) {
+    //   const salt = await bcrypt.genSalt(10);
+    //   const hashedPassword = await bcrypt.hash(password, salt);
+    //   req.body.password = hashedPassword;
+    // }
 
     const updateUser = await AuthModel.findByIdAndUpdate(
       { _id: userid },
