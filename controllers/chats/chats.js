@@ -30,6 +30,7 @@ const CreateChat = async (req, res) => {
       sentBy: findOneUser._id,
       ...chatData,
     });
+    io.emit('newChat', newChat);
 
     return res
       .status(StatusCodes.CREATED)

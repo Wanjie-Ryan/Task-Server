@@ -9,6 +9,23 @@ const rateLimit = require("express-rate-limit");
 require("dotenv").config();
 const { StatusCodes } = require("http-status-codes");
 const connectionDB = require("./connection/connection");
+const http = require("http").createServer(app);
+const io = require("socket.io")(http);
+
+// WORKING WITH IO
+
+io.on("connection", (socket) => {
+  console.log(socket);
+  console.log(`User with id:${socket.id} connected`);
+
+  socket.on("message", (data) => {
+    socket.broadcast.emit("message", data);
+  });
+
+  socket.on("disconnect", () => {
+    console.log(`User with id:${socket.id} disconnected`);
+  });
+});
 
 // REGISTER AND LOGIN ROUTES
 
