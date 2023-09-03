@@ -17,7 +17,11 @@ const RegisterLoginRoute = require("./routes/Authentication/regLog");
 // ADMIN ROUTES
 
 const project = require("./routes/Admin/projects");
-const Task = require('./routes/Admin/tasks')
+const Task = require("./routes/Admin/tasks");
+
+// CHAT ROUTES
+
+const Chats = require("./routes/chats/chats");
 
 app.use(helmet());
 app.use(xss());
@@ -41,6 +45,9 @@ app.use("/api/tasks", RegisterLoginRoute);
 app.use("/api/tasks", project);
 app.use("/api/tasks/v2", Task);
 
+//CHAT ROUTES
+
+app.use("/api/chat", Chats);
 
 const DBConnection = async () => {
   try {
