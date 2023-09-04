@@ -30,13 +30,13 @@ const CreateChat = async (req, res) => {
       sentBy: findOneUser._id,
       ...chatData,
     });
-    io.emit('newChat', newChat);
+    // io.emit('newChat', newChat);
 
     return res
       .status(StatusCodes.CREATED)
       .json({ msg: "Your message was sent", newChat });
   } catch (err) {
-    // console.log(err)
+    console.log(err);
     res
       .status(StatusCodes.INTERNAL_SERVER_ERROR)
       .json({ msg: "Something went wrong, please try again later" });

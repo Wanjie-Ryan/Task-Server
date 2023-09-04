@@ -9,36 +9,6 @@ const rateLimit = require("express-rate-limit");
 require("dotenv").config();
 const { StatusCodes } = require("http-status-codes");
 const connectionDB = require("./connection/connection");
-const http = require("http").createServer(app);
-const io = require("socket.io")(http);
-
-// WORKING WITH IO
-
-io.on("connection", (socket) => {
-  console.log(socket);
-  console.log(`User with id:${socket.id} connected`);
-
-  socket.on("message", (data) => {
-    socket.broadcast.emit("message", data);
-  });
-
-  socket.on("disconnect", () => {
-    console.log(`User with id:${socket.id} disconnected`);
-  });
-});
-
-// REGISTER AND LOGIN ROUTES
-
-const RegisterLoginRoute = require("./routes/Authentication/regLog");
-
-// ADMIN ROUTES
-
-const project = require("./routes/Admin/projects");
-const Task = require("./routes/Admin/tasks");
-
-// CHAT ROUTES
-
-const Chats = require("./routes/chats/chats");
 
 app.use(helmet());
 app.use(xss());
@@ -52,6 +22,19 @@ app.use(
   })
 );
 app.use(cors());
+
+// REGISTER AND LOGIN ROUTES
+
+const RegisterLoginRoute = require("./routes/Authentication/regLog");
+
+// ADMIN ROUTES
+
+const project = require("./routes/Admin/projects");
+const Task = require("./routes/Admin/tasks");
+
+// CHAT ROUTES
+
+const Chats = require("./routes/chats/chats");
 
 // REGISTER AND LOGIN ROUTES
 
