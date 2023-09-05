@@ -49,6 +49,13 @@ app.use("/api/tasks/v2", Task);
 
 app.use("/api/chat", Chats);
 
+app.get("/wake-up", (req, res) => {
+  res.json({
+    responseType: "success",
+    message: "Server is awake",
+  });
+});
+
 const DBConnection = async () => {
   try {
     await connectionDB(process.env.mongo_url);
