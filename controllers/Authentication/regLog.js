@@ -135,7 +135,7 @@ const getSingleUser = async (req, res) => {
     const singleuserObj = singleUser.toObject();
     delete singleuserObj._id;
     delete singleuserObj.company;
-    delete singleuserObj.role;
+    // delete singleuserObj.role;
     delete singleuserObj.password;
     return res
       .status(StatusCodes.OK)
