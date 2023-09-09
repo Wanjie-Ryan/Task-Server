@@ -36,6 +36,9 @@ const Task = require("./routes/Admin/tasks");
 
 const Chats = require("./routes/chats/chats");
 
+//PAYMENT ROUTES
+const payment = require('./routes/payments/pay')
+
 // REGISTER AND LOGIN ROUTES
 
 app.use("/api/tasks", RegisterLoginRoute);
@@ -48,6 +51,9 @@ app.use("/api/tasks/v2", Task);
 //CHAT ROUTES
 
 app.use("/api/chat", Chats);
+
+//PAYMENT ROUTES
+app.use('/api/chpter',payment)
 
 app.get("/wake-up", (req, res) => {
   res.json({
