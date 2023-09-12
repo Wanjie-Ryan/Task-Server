@@ -11,7 +11,7 @@ const CreatePayment = async (req, res) => {
     if (!token) {
       return res
         .status(StatusCodes.UNAUTHORIZED)
-        .json({ msg: "You are not authorized to create a project" });
+        .json({ msg: "You are not authorized to do a payment" });
     }
 
     const decodedToken = jwt.verify(token, process.env.user_secret_key);
@@ -21,11 +21,14 @@ const CreatePayment = async (req, res) => {
 
     if (!findOneUser) {
       return res.status(StatusCodes.NOT_FOUND).json({
-        msg: "User does not exist, therefore, cannot create the project",
+        msg: "User does not exist, therefore, cannot do a payment",
       });
     }
 
-    const newPayment = await paymentModel.create(...req.body);
+    const newPayment = await paymentModel.create({
+      transactedBy: userId,
+      status,
+    });
 
     return res
       .status(StatusCodes.OK)
