@@ -53,7 +53,7 @@ app.use("/api/tasks/v2", Task);
 app.use("/api/chat", Chats);
 
 //PAYMENT ROUTES
-app.use('/api/chpter',payment)
+app.use('/api/chpter', payment)
 
 app.get("/wake-up", (req, res) => {
   res.json({

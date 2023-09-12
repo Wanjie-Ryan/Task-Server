@@ -3,7 +3,7 @@ const UserModel = require("../../models/RegLog/reglog");
 const jwt = require("jsonwebtoken");
 const { StatusCodes } = require("http-status-codes");
 
-const CreatePayment = async (req, res) => {
+const CreatePayment =  async(req, res) => {
   try {
     const { transactedBy, status } = req.body;
 
@@ -40,6 +40,27 @@ const CreatePayment = async (req, res) => {
       .status(StatusCodes.INTERNAL_SERVER_ERROR)
       .json({ msg: "Something went wrong, please try again later" });
   }
+
 };
 
-module.exports = { CreatePayment };
+
+const getAllPayments = async(req,res)=>{
+
+    try{
+
+        const allPayment = await paymentModel.find({})
+
+        return res.status(StatusCodes.OK).json({msg:'Payments are:', allPayment})
+
+
+    }
+    catch(err){
+
+        res
+        .status(StatusCodes.INTERNAL_SERVER_ERROR)
+        .json({ msg: "Something went wrong, please try again later" });
+
+    }
+}
+
+module.exports = { CreatePayment,getAllPayments };
