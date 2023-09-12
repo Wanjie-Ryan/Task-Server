@@ -3,9 +3,16 @@ const UserModel = require("../../models/RegLog/reglog");
 const jwt = require("jsonwebtoken");
 const { StatusCodes } = require("http-status-codes");
 
-const CreatePayment =  async(req, res) => {
+const CreatePayment = async (req, res) => {
   try {
-    const { transactedBy, status } = req.body;
+    const {
+      Message,
+      Success,
+      Status,
+      Amount,
+      transaction_code,
+      transaction_reference,
+    } = req.body;
 
     const token = req.headers.authorization.split(" ")[1];
     if (!token) {
@@ -26,8 +33,12 @@ const CreatePayment =  async(req, res) => {
     }
 
     const newPayment = await paymentModel.create({
-      transactedBy: userId,
-      status,
+      Message,
+      Success,
+      Status,
+      Amount,
+      transaction_code,
+      transaction_reference: userId,
     });
 
     return res
@@ -40,27 +51,24 @@ const CreatePayment =  async(req, res) => {
       .status(StatusCodes.INTERNAL_SERVER_ERROR)
       .json({ msg: "Something went wrong, please try again later" });
   }
-
 };
 
+// const getAllPayments = async(req,res)=>{
 
-const getAllPayments = async(req,res)=>{
+//     try{
 
-    try{
+//         const allPayment = await paymentModel.find({})
 
-        const allPayment = await paymentModel.find({})
+//         return res.status(StatusCodes.OK).json({msg:'Payments are:', allPayment})
 
-        return res.status(StatusCodes.OK).json({msg:'Payments are:', allPayment})
+//     }
+//     catch(err){
 
+//         res
+//         .status(StatusCodes.INTERNAL_SERVER_ERROR)
+//         .json({ msg: "Something went wrong, please try again later" });
 
-    }
-    catch(err){
+//     }
+// }
 
-        res
-        .status(StatusCodes.INTERNAL_SERVER_ERROR)
-        .json({ msg: "Something went wrong, please try again later" });
-
-    }
-}
-
-module.exports = { CreatePayment,getAllPayments };
+module.exports = { CreatePayment };
