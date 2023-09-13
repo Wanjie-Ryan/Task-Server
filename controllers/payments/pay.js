@@ -37,8 +37,8 @@ const CreatePayment = async (req, res) => {
       Success,
       Status,
       Amount,
-      transaction_code,
       transaction_reference: userId,
+      transaction_code,
     });
 
     return res

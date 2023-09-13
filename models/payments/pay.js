@@ -6,7 +6,7 @@ const PaymentSchema = new mongoose.Schema({
     required: true,
   },
   Success: {
-    type: String,
+    type: Boolean,
     required: true,
   },
   Status: {
@@ -14,16 +14,16 @@ const PaymentSchema = new mongoose.Schema({
     required: true,
   },
   Amount: {
-    type: Number,
-    required: true,
-  },
-  transaction_code: {
     type: String,
     required: true,
   },
   transaction_reference: {
     type: mongoose.Schema.Types.ObjectId,
     ref: "User",
+    required: true,
+  },
+  transaction_code: {
+    type: String,
     required: true,
   },
 });
