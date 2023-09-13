@@ -14,8 +14,6 @@ const CreatePayment = async (req, res) => {
       transaction_code,
     } = req.body;
 
-    
-
     const newPayment = await paymentModel.create({
       Message,
       Success,
@@ -38,11 +36,9 @@ const CreatePayment = async (req, res) => {
   }
 };
 
-const getAllPayments = async(req,res)=>{
-
-    try{
-
-      const token = req.headers.authorization.split(" ")[1];
+const getAllPayments = async (req, res) => {
+  try {
+    const token = req.headers.authorization.split(" ")[1];
     if (!token) {
       return res
         .status(StatusCodes.UNAUTHORIZED)
@@ -61,29 +57,27 @@ const getAllPayments = async(req,res)=>{
       });
     }
 
+    const allPayment = await paymentModel.find({});
+    // console.log(allPayment)
 
-
-        const allPayment = await paymentModel.find({})
-        // console.log(allPayment)
-
-        const userPayment = allPayment.filter((payment)=>
-          payment.transaction_reference.equals(userId)
-        )
-        // console.log(userPayment)
-        if(userPayment.length === 0){
-          return res.status(StatusCodes.NOT_FOUND).json({msg:`No payment has been transacted by userId:${userId}`})
-        }
-
-        return res.status(StatusCodes.OK).json({msg:'Payments are:', userPayment})
-
+    const userPayment = allPayment.filter((payment) =>
+      payment.transaction_reference.equals(userId)
+    );
+    // console.log(userPayment)
+    if (userPayment.length === 0) {
+      return res
+        .status(StatusCodes.NOT_FOUND)
+        .json({ msg: `No payment has been transacted by userId:${userId}` });
     }
-    catch(err){
 
-        res
-        .status(StatusCodes.INTERNAL_SERVER_ERROR)
-        .json({ msg: "Something went wrong, please try again later" });
+    return res
+      .status(StatusCodes.OK)
+      .json({ msg: "Payments are:", userPayment });
+  } catch (err) {
+    res
+      .status(StatusCodes.INTERNAL_SERVER_ERROR)
+      .json({ msg: "Something went wrong, please try again later" });
+  }
+};
 
-    }
-}
-
-module.exports = { CreatePayment,getAllPayments };
+module.exports = { CreatePayment, getAllPayments };
