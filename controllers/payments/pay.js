@@ -10,36 +10,21 @@ const CreatePayment = async (req, res) => {
       Success,
       Status,
       Amount,
-      transaction_code,
       transaction_reference,
+      transaction_code,
     } = req.body;
 
-    const token = req.headers.authorization.split(" ")[1];
-    if (!token) {
-      return res
-        .status(StatusCodes.UNAUTHORIZED)
-        .json({ msg: "You are not authorized to do a payment" });
-    }
-
-    const decodedToken = jwt.verify(token, process.env.user_secret_key);
-    const userId = decodedToken.userId;
-
-    const findOneUser = await UserModel.findById(userId);
-
-    if (!findOneUser) {
-      return res.status(StatusCodes.NOT_FOUND).json({
-        msg: "User does not exist, therefore, cannot do a payment",
-      });
-    }
+    
 
     const newPayment = await paymentModel.create({
       Message,
       Success,
       Status,
       Amount,
-      transaction_reference: userId,
+      transaction_reference,
       transaction_code,
     });
+    // console.log(newPayment)
 
     return res
       .status(StatusCodes.OK)
@@ -53,22 +38,52 @@ const CreatePayment = async (req, res) => {
   }
 };
 
-// const getAllPayments = async(req,res)=>{
+const getAllPayments = async(req,res)=>{
 
-//     try{
+    try{
 
-//         const allPayment = await paymentModel.find({})
+      const token = req.headers.authorization.split(" ")[1];
+    if (!token) {
+      return res
+        .status(StatusCodes.UNAUTHORIZED)
+        .json({ msg: "You are not authorized to do a payment" });
+    }
 
-//         return res.status(StatusCodes.OK).json({msg:'Payments are:', allPayment})
+    const decodedToken = jwt.verify(token, process.env.user_secret_key);
+    const userId = decodedToken.userId;
+    // console.log(userId)
 
-//     }
-//     catch(err){
+    const findOneUser = await UserModel.findById(userId);
 
-//         res
-//         .status(StatusCodes.INTERNAL_SERVER_ERROR)
-//         .json({ msg: "Something went wrong, please try again later" });
+    if (!findOneUser) {
+      return res.status(StatusCodes.NOT_FOUND).json({
+        msg: "User does not exist, therefore, cannot do a payment",
+      });
+    }
 
-//     }
-// }
 
-module.exports = { CreatePayment };
+
+        const allPayment = await paymentModel.find({})
+        // console.log(allPayment)
+
+        const userPayment = allPayment.filter((payment)=>
+          payment.transaction_reference.equals(userId)
+        )
+        // console.log(userPayment)
+        if(userPayment.length === 0){
+          return res.status(StatusCodes.NOT_FOUND).json({msg:`No payment has been transacted by userId:${userId}`})
+        }
+
+        return res.status(StatusCodes.OK).json({msg:'Payments are:', userPayment})
+
+    }
+    catch(err){
+
+        res
+        .status(StatusCodes.INTERNAL_SERVER_ERROR)
+        .json({ msg: "Something went wrong, please try again later" });
+
+    }
+}
+
+module.exports = { CreatePayment,getAllPayments };

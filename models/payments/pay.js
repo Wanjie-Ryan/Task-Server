@@ -15,7 +15,7 @@ const PaymentSchema = new mongoose.Schema({
   },
   Amount: {
     type: String,
-    required: true,
+    
   },
   transaction_reference: {
     type: mongoose.Schema.Types.ObjectId,
@@ -24,7 +24,7 @@ const PaymentSchema = new mongoose.Schema({
   },
   transaction_code: {
     type: String,
-    required: true,
+    
   },
 });
 
