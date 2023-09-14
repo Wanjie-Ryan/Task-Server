@@ -57,14 +57,17 @@ const getAllPayments = async (req, res) => {
       });
     }
 
-    const allPayment = await paymentModel.find({});
+    const allPayment = await paymentModel.find({transaction_reference:userId}).sort({createdAt:-1}).limit(1)
     // console.log(allPayment)
 
-    const userPayment = allPayment.filter((payment) =>
-      payment.transaction_reference.equals(userId)
-    );
+    // const userPayment = allPayment.filter((payment) =>
+    //   payment.transaction_reference.equals(userId)
+    // );
+    
+
     // console.log(userPayment)
-    if (userPayment.length === 0) {
+    // console.log(userPayment)
+    if (allPayment.length === 0) {
       return res
         .status(StatusCodes.NOT_FOUND)
         .json({ msg: `No payment has been transacted by userId:${userId}` });
@@ -72,7 +75,7 @@ const getAllPayments = async (req, res) => {
 
     return res
       .status(StatusCodes.OK)
-      .json({ msg: "Payments are:", userPayment });
+      .json({ msg: "Payments are:",latestpayment: allPayment[0] });
   } catch (err) {
     res
       .status(StatusCodes.INTERNAL_SERVER_ERROR)
