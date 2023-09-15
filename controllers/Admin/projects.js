@@ -94,15 +94,31 @@ const UpdateProject = async (req, res) => {
   }
 };
 
-const DeleteProject = async(req,res)=>{
+const DeleteProject = async (req, res) => {
+  try {
+    const { id: projectId } = req.params;
 
-  try{
+    const deleteProject = await ProjectsModel.findByIdAndDelete(projectId);
+    if (!deleteProject) {
+      return res
+        .status(StatusCodes.NOT_FOUND)
+        .json({ msg: `Project of id: ${projectId} was not found` });
+    }
 
-
+    return res
+      .status(StatusCodes.OK)
+      .json({ msg: `Project of id ${projectId} was deleted successfully` });
+  } catch (err) {
+    // console.log(err)
+    res
+      .status(StatusCodes.INTERNAL_SERVER_ERROR)
+      .json({ msg: "Something went wrong, please try again later" });
   }
-  catch(err){
+};
 
-  }
-}
-
-module.exports = { CreateProject, GetAllProjects, UpdateProject,DeleteProject };
+module.exports = {
+  CreateProject,
+  GetAllProjects,
+  UpdateProject,
+  DeleteProject,
+};
