@@ -57,13 +57,15 @@ const getAllPayments = async (req, res) => {
       });
     }
 
-    const allPayment = await paymentModel.find({transaction_reference:userId}).sort({createdAt:-1}).limit(1)
+    const allPayment = await paymentModel
+      .find({ transaction_reference: userId })
+      .sort({ createdAt: -1 })
+      .limit(1);
     // console.log(allPayment)
 
     // const userPayment = allPayment.filter((payment) =>
     //   payment.transaction_reference.equals(userId)
     // );
-    
 
     // console.log(userPayment)
     // console.log(userPayment)
@@ -75,7 +77,7 @@ const getAllPayments = async (req, res) => {
 
     return res
       .status(StatusCodes.OK)
-      .json({ msg: "Payments are:",latestpayment: allPayment[0] });
+      .json({ msg: "Payments are:", latestpayment: allPayment[0] });
   } catch (err) {
     res
       .status(StatusCodes.INTERNAL_SERVER_ERROR)
