@@ -6,11 +6,12 @@ const {
   GetAdminTask,
   GetuserTask,
   updateTasks,
-  DeleteTasks
+  DeleteTasks,
 } = require("../../controllers/Admin/tasks");
 
 router.route("/createtask").post(AuthMiddleware, CreateTask);
 router.route("/getadmintask").get(AuthMiddleware, GetAdminTask);
 router.route("/getusertask").get(AuthMiddleware, GetuserTask);
 router.route("/updatetask/:id").patch(AuthMiddleware, updateTasks);
+router.route("/deletetask/:id").delete(AuthMiddleware, DeleteTasks);
 module.exports = router;

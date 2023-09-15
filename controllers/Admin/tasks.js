@@ -176,4 +176,10 @@ const DeleteTasks = async (req, res) => {
   }
 };
 
-module.exports = { CreateTask, GetAdminTask, GetuserTask, updateTasks,DeleteTasks };
+module.exports = {
+  CreateTask,
+  GetAdminTask,
+  GetuserTask,
+  updateTasks,
+  DeleteTasks,
+};
