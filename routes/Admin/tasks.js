@@ -6,6 +6,7 @@ const {
   GetAdminTask,
   GetuserTask,
   updateTasks,
+  DeleteTasks
 } = require("../../controllers/Admin/tasks");
 
 router.route("/createtask").post(AuthMiddleware, CreateTask);

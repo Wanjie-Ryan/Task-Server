@@ -154,4 +154,26 @@ const updateTasks = async (req, res) => {
   }
 };
 
-module.exports = { CreateTask, GetAdminTask, GetuserTask, updateTasks };
+const DeleteTasks = async (req, res) => {
+  try {
+    const { id: taskId } = req.params;
+
+    const deleteTask = await taskModel.findByIdAndDelete(taskId);
+    if (!deleteTask) {
+      return res
+        .status(StatusCodes.NOT_FOUND)
+        .json({ msg: `Task of id: ${taskId} was not found` });
+    }
+
+    return res
+      .status(StatusCodes.OK)
+      .json({ msg: `Task of id ${taskId} was deleted successfully` });
+  } catch (err) {
+    // console.log(err)
+    res
+      .status(StatusCodes.INTERNAL_SERVER_ERROR)
+      .json({ msg: "Something went wrong, please try again later" });
+  }
+};
+
+module.exports = { CreateTask, GetAdminTask, GetuserTask, updateTasks,DeleteTasks };
