@@ -94,4 +94,15 @@ const UpdateProject = async (req, res) => {
   }
 };
 
-module.exports = { CreateProject, GetAllProjects, UpdateProject };
+const DeleteProject = async(req,res)=>{
+
+  try{
+
+
+  }
+  catch(err){
+
+  }
+}
+
+module.exports = { CreateProject, GetAllProjects, UpdateProject,DeleteProject };
