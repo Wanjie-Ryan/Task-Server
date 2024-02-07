@@ -48,7 +48,7 @@ const GetAdminTask = async (req, res) => {
       const tasks = await taskModel
         .find({})
         .populate("project", "name")
-        .populate("assign", "name");
+        .populate("assign", "name").lean();
 
       return res
         .status(StatusCodes.OK)
