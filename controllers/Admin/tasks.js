@@ -45,10 +45,9 @@ const GetAdminTask = async (req, res) => {
         .status(StatusCodes.UNAUTHORIZED)
         .json({ msg: "Cannot perform this request" });
     } else if (findOneUser.role === "Admin") {
-      const tasks = await taskModel
-        .find({})
-        .populate("project", "name")
-        // .populate("assign", "name").lean();
+      const tasks = await taskModel.find({});
+      // .populate("project", "name")
+      // .populate("assign", "name").lean();
 
       return res
         .status(StatusCodes.OK)
