@@ -176,10 +176,44 @@ const DeleteTasks = async (req, res) => {
   }
 };
 
+const searchTask = async (req, res) => {
+  try {
+    const { searchTerm } = req.query;
+
+    if (!searchTerm) {
+      return res
+        .status(StatusCodes.NOT_FOUND)
+        .json({ msg: "Please provide a search term" });
+    }
+
+    //using regular expression to perform a case-insensitive search
+
+    const regex = new RegExp(searchTerm, "i");
+
+    const foundTasks = await taskModel.find({ name: regex });
+
+    if (foundTasks.length === 0) {
+      return res
+        .status(StatusCodes.NOT_FOUND)
+        .json({ msg: "No task found with that name" });
+    }
+
+    return res
+      .status(StatusCodes.OK)
+      .json({ msg: "Found tasks are:", foundTasks });
+  } catch (err) {
+    console.log(err);
+    res
+      .status(StatusCodes.INTERNAL_SERVER_ERROR)
+      .json({ msg: "Something went wrong, please try again later" });
+  }
+};
+
 module.exports = {
   CreateTask,
   GetAdminTask,
   GetuserTask,
   updateTasks,
   DeleteTasks,
+  searchTask,
 };

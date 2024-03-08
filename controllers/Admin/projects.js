@@ -142,7 +142,7 @@ const SearchProject = async (req, res) => {
       .status(StatusCodes.OK)
       .json({ msg: "Projects found are:", foundProjects });
   } catch (err) {
-    console.log(err);
+    // console.log(err);
     res
       .status(StatusCodes.INTERNAL_SERVER_ERROR)
       .json({ msg: "There seems to be an error, please try again!" });
