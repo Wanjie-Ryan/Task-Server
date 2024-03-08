@@ -190,7 +190,8 @@ const searchTask = async (req, res) => {
 
     const regex = new RegExp(searchTerm, "i");
 
-    const foundTasks = await taskModel.find({ name: regex });
+    const foundTasks = await taskModel.find({ name: regex }).populate("project", "name")
+    .populate("assign", "name");
 
     if (foundTasks.length === 0) {
       return res
