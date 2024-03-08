@@ -116,9 +116,43 @@ const DeleteProject = async (req, res) => {
   }
 };
 
+const SearchProject = async (req, res) => {
+  try {
+    const { searchTerm } = req.query;
+
+    if (!searchTerm) {
+      return res
+        .status(StatusCodes.BAD_REQUEST)
+        .json({ msg: "Please provide a search term" });
+    }
+
+    //using regular expression to perform a case-insensitive search
+
+    const regex = new RegExp(searchTerm, "i");
+
+    const foundProjects = await ProjectsModel.find({ name: regex });
+
+    if (foundProjects.length === 0) {
+      return res
+        .status(StatusCodes.NOT_FOUND)
+        .json({ msg: "No Project was found" });
+    }
+
+    return res
+      .status(StatusCodes.OK)
+      .json({ msg: "Projects found are:", foundProjects });
+  } catch (err) {
+    console.log(err);
+    res
+      .status(StatusCodes.INTERNAL_SERVER_ERROR)
+      .json({ msg: "There seems to be an error, please try again!" });
+  }
+};
+
 module.exports = {
   CreateProject,
   GetAllProjects,
   UpdateProject,
   DeleteProject,
+  SearchProject,
 };
