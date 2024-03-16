@@ -6,7 +6,7 @@ const { StatusCodes } = require("http-status-codes");
 
 const CreateTask = async (req, res) => {
   try {
-    const { project, name, description, deadline, status, assign } = req.body;
+    const { project, name, description, deadline, progress, assign } = req.body;
 
     const newTask = await taskModel.create(req.body);
 
@@ -14,7 +14,7 @@ const CreateTask = async (req, res) => {
       .status(StatusCodes.CREATED)
       .json({ msg: "The Task was created successfully", newTask });
   } catch (err) {
-    console.log(err);
+    // console.log(err);
     res
       .status(StatusCodes.INTERNAL_SERVER_ERROR)
       .json({ msg: "Something went wrong, please try again later" });
@@ -127,7 +127,7 @@ const updateTasks = async (req, res) => {
         .status(StatusCodes.UNAUTHORIZED)
         .json({ msg: "Cannot perform this request" });
     } else if (findOneUser.role === "Member") {
-      const { status } = req.body;
+      const { progress } = req.body;
       const { id: taskId } = req.params;
 
       const updateSingleTask = await taskModel.findByIdAndUpdate(
@@ -147,7 +147,7 @@ const updateTasks = async (req, res) => {
         .json({ msg: "Task was updated sucessfully", updateSingleTask });
     }
   } catch (err) {
-    console.log(err);
+    // console.log(err);
     res
       .status(StatusCodes.INTERNAL_SERVER_ERROR)
       .json({ msg: "Something went wrong, please try again later" });
@@ -190,8 +190,10 @@ const searchTask = async (req, res) => {
 
     const regex = new RegExp(searchTerm, "i");
 
-    const foundTasks = await taskModel.find({ name: regex }).populate("project", "name")
-    .populate("assign", "name");
+    const foundTasks = await taskModel
+      .find({ name: regex })
+      .populate("project", "name")
+      .populate("assign", "name");
 
     if (foundTasks.length === 0) {
       return res

@@ -25,11 +25,19 @@ const taskSchema = new mongoose.Schema(
       required: [true, "deadline date of the task must be provided"],
     },
 
-    status: {
+    // status: {
+    //   type: String,
+    //   enum: ["pending", "complete"],
+    //   enum: ["0", "25", "50", "75", "100"],
+    //   default: "0",
+    //   required: [true, "Status of Task is required"],
+    // },
+
+    progress: {
       type: String,
-      enum: ["pending", "complete"],
-      default: "Pending",
-      required: [true, "Status of Project is required"],
+      enum: ["0", "25", "50", "75", "100"],
+      default: "0",
+      required: [true, "Progress of Task is required"],
     },
 
     assign: [

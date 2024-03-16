@@ -67,7 +67,7 @@ const GetAllProjects = async (req, res) => {
 
 const UpdateProject = async (req, res) => {
   try {
-    const { status } = req.body;
+    const { progress } = req.body;
     const { id: projectId } = req.params;
 
     const UpdateSingleProject = await ProjectsModel.findByIdAndUpdate(
